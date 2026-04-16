@@ -1,0 +1,32 @@
+[
+  {
+    "id": 10,
+    "description": "Complete online JavaScript course",
+    "completed": true
+  },
+  {
+    "id": 11,
+    "description": "Jog around the park 3x",
+    "completed": false
+  },
+  {
+    "id": 12,
+    "description": "10 minutes meditation",
+    "completed": false
+  },
+  {
+    "id": 13,
+    "description": "Read for 1 hour",
+    "completed": false
+  },
+  {
+    "id": 14,
+    "description": "Pick up groceries",
+    "completed": false
+  },
+  {
+    "id": 15,
+    "description": "Complete Todo App on Frontend Mentor",
+    "completed": false
+  }
+]

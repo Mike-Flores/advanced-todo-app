@@ -1,0 +1,7 @@
+[
+  { "description": "Invalid Task", "completed": false },
+
+  { "id": 102, "completed": true },
+
+  { "id": 102, "description": "Missing 'completed' property" }
+]

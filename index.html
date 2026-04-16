@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" type="image/png" href="images/favicon-32x32.png" />
+
+    <script>
+      // Retrieve saved theme preference
+      const savedTheme = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    </script>
+
+    <link rel="stylesheet" href="CSS/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="module" src="Js/taskManager.js"></script>
+    <script type="module" src="Js/ui.js"></script>
+    <title>Task Manager</title>
+  </head>
+  <body class="app">
+    <div class="wrapper">
+      <div id="title-n-btn" class="title-n-btn">
+        <h1 class="title">Todo List</h1>
+
+        <!-- Theme change button -->
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          aria-label="Change color mode"
+        >
+          <svg
+            class="sun-icon"
+            width="800px"
+            height="800px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="24" height="24" fill="transparent" />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12Z"
+              fill="white"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12 2C12.5523 2 13 2.44772 13 3V5C13 5.55228 12.5523 6 12 6C11.4477 6 11 5.55228 11 5V3C11 2.44772 11.4477 2 12 2Z"
+              fill="white"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L17.7071 7.70711C17.3166 8.09763 16.6834 8.09763 16.2929 7.70711C15.9024 7.31658 15.9024 6.68342 16.2929 6.29289L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289Z"
+              fill="white"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M18 12C18 11.4477 18.4477 11 19 11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H19C18.4477 13 18 12.5523 18 12Z"
+              fill="white"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M16.2929 16.2929C16.6834 15.9024 17.3166 15.9024 17.7071 16.2929L19.7071 18.2929C20.0976 18.6834 20.0976 19.3166 19.7071 19.7071C19.3166 20.0976 18.6834 20.0976 18.2929 19.7071L16.2929 17.7071C15.9024 17.3166 15.9024 16.6834 16.2929 16.2929Z"
+              fill="white"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12 18C12.5523 18 13 18.4477 13 19V21C13 21.5523 12.5523 22 12 22C11.4477 22 11 21.5523 11 21V19C11 18.4477 11.4477 18 12 18Z"
+              fill="white"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M7.70711 16.2929C8.09763 16.6834 8.09763 17.3166 7.70711 17.7071L5.70711 19.7071C5.31658 20.0976 4.68342 20.0976 4.29289 19.7071C3.90237 19.3166 3.90237 18.6834 4.29289 18.2929L6.29289 16.2929C6.68342 15.9024 7.31658 15.9024 7.70711 16.2929Z"
+              fill="white"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M2 12C2 11.4477 2.44772 11 3 11H5C5.55228 11 6 11.4477 6 12C6 12.5523 5.55228 13 5 13H3C2.44772 13 2 12.5523 2 12Z"
+              fill="white"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M4.29289 4.29289C4.68342 3.90237 5.31658 3.90237 5.70711 4.29289L7.70711 6.29289C8.09763 6.68342 8.09763 7.31658 7.70711 7.70711C7.31658 8.09763 6.68342 8.09763 6.29289 7.70711L4.29289 5.70711C3.90237 5.31658 3.90237 4.68342 4.29289 4.29289Z"
+              fill="white"
+            />
+          </svg>
+
+          <svg
+            class="moon-icon"
+            width="800px"
+            height="800px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 22C17.5228 22 22 17.5228 22 12C22 11.5373 21.3065 11.4608 21.0672 11.8568C19.9289 13.7406 17.8615 15 15.5 15C11.9101 15 9 12.0899 9 8.5C9 6.13845 10.2594 4.07105 12.1432 2.93276C12.5392 2.69347 12.4627 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+              fill="white"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Form to add task -->
+      <form id="task-form">
+        <div class="input-wrapper">
+          <div class="circle"></div>
+          <input
+            type="text"
+            id="new-task-input"
+            class="new-task-input"
+            placeholder="Create a new todo..."
+          />
+        </div>
+      </form>
+
+      <!-- Tasks list -->
+      <main id="task-list-section" class="task-list-section">
+        <template id="task-template">
+          <li class="task-item">
+            <input type="checkbox" class="task-checkbox" />
+            <label for="" class="label"></label>
+
+            <button class="edit-btn" aria-label="Edit task">
+              <svg
+                width="18"
+                height="18"
+                class="no-pointer-events"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke=""
+              >
+                <path
+                  d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"
+                ></path>
+                <path
+                  d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"
+                ></path>
+              </svg>
+            </button>
+            <button class="delete-btn" aria-label="Delet task">
+              <!-- &times; -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="no-pointer-events"
+                width="18"
+                height="18"
+              >
+                <path
+                  fill=""
+                  fill-rule="evenodd"
+                  d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"
+                />
+              </svg>
+            </button>
+          </li>
+        </template>
+        <ul id="task-list" class="task-list"></ul>
+      </main>
+
+      <!-- Statistics -->
+      <div id="stats-div">
+        <template id="stats-template">
+          <button id="close-stats" class="close-panel btn close-stats">
+            x
+          </button>
+          <p class="stat-total"></p>
+          <p class="stat-completed"></p>
+          <p class="stat-pending"></p>
+          <p class="stat-percentage"></p>
+        </template>
+        <div id="stats" class="stats-container hidden"></div>
+      </div>
+
+      <div id="toast-container" class="toast-container"></div>
+
+      <dialog id="confirm-modal" class="confirm-modal modal-container">
+        <form method="dialog" id="confirm-form">
+          <p id="modal-text" class="modal-text"></p>
+
+          <!-- Delete button -->
+          <button type="submit" id="confirm-btn" class="confirm-btn">
+            Confirm
+          </button>
+          <!-- Import buttons -->
+          <button type="submit" id="fusion-btn" class="fusion-btn">
+            Merge
+          </button>
+          <button type="submit" id="replace-btn" class="replace-btn">
+            Replace
+          </button>
+
+          <!-- Export button -->
+          <button type="submit" id="json-btn" class="json-btn">
+            Export JSON
+          </button>
+          <!-- Cancel button -->
+          <button
+            formnovalidate
+            value="cancel"
+            id="cancel-btn"
+            class="cancel-btn"
+          >
+            Cancel
+          </button>
+        </form>
+      </dialog>
+
+      <!-- File picker -->
+      <input type="file" id="file-input" class="file-input" accept=".json" />
+
+      <!-- Format error report -->
+      <div id="error-overlay" class="overlay">
+        <div id="error-container" class="modal-container">
+          <button id="close-errors" class="btn close-panel">x</button>
+          <h3>Format error(s)</h3>
+          <dl id="errors-list" class="errors-list"></dl>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer id="footer" class="footer">
+        <div class="left-n-clear-completed">
+          <p id="items-left" class="items-left">items left</p>
+          <button id="clear-completed" class="clear-completed btn">
+            Clear Completed
+          </button>
+        </div>
+
+        <div class="footer-btns">
+          <div id="filters" class="filters">
+            <button type="button" id="all-filter" class="footer-filter btn">
+              All
+            </button>
+            <button type="button" id="active-filter" class="footer-filter btn">
+              Active
+            </button>
+            <button
+              type="button"
+              id="completed-filter"
+              class="footer-filter btn"
+            >
+              Completed
+            </button>
+          </div>
+
+          <button
+            type="button"
+            id="more-options-btn"
+            class="more-options-btn btn"
+            aria-label="More options button"
+            title="See more options"
+          >
+            &raquo
+          </button>
+
+          <!-- More options menu -->
+          <div id="menu-of-options" class="menu-of-options hidden">
+            <button type="button" id="export-btn" class="export-btn btn">
+              Export Tasks
+            </button>
+            <div class="import-div">
+              <button type="button" id="import-btn" class="import-btn btn">
+                Import tasks
+              </button>
+              <button
+                type="button"
+                id="error-toggle"
+                class="error-toggle hidden is-blinking"
+              >
+                <span id="error-count" class="error-count"></span>
+              </button>
+            </div>
+            <button type="button" id="complete-all-btn" class="btn">
+              Complete All
+            </button>
+            <button type="button" id="clear-all-btn" class="btn">
+              Clear All
+            </button>
+            <button type="button" id="stats-btn" class="btn">
+              See statistics
+            </button>
+          </div>
+        </div>
+      </footer>
+
+      <span class="drag-n-drop"
+        >Drag and drop to reorder list <br />
+        ("All" filter only)</span
+      >
+    </div>
+  </body>
+</html>

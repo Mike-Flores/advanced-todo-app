@@ -1,0 +1,5 @@
+[
+  { "id": 501, "description": "Buy Bread", "completed": false },
+  { "id": 11, "description": "Learn React", "completed": false },
+  { "id": "bad", "description": "Error on id", "completed": true }
+]
