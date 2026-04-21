@@ -1,56 +1,60 @@
+// === Imports ===
 import { taskManager } from "./taskManager.js";
 
+// === DOM references ===
+
+// Document shorthand
 const d = document;
 
+// Theme
+const $themeBtn = d.getElementById("theme-toggle");
+
+// Task list
 const $taskList = d.getElementById("task-list");
 const $taskTemplate = document.getElementById("task-template");
-
-// Statistics div:
-const $statsDiv = d.getElementById("stats");
-const $statsTemplate = d.getElementById("stats-template");
-
 const $newTaskInput = d.getElementById("new-task-input");
-
-const $toastContainer = d.getElementById("toast-container");
-
+const $form = d.getElementById("task-form");
+const $main = d.getElementById("task-list-section");
 const $itemsLeft = d.getElementById("items-left");
 
-const $confirmModal = document.getElementById("confirm-modal");
-const $modalText = document.getElementById("modal-text");
-
-const $fileInput = document.getElementById("file-input");
-
-const $errorToggle = d.getElementById("error-toggle");
-const $errorCount = d.getElementById("error-count");
-
-const $errorOverlay = d.getElementById("error-overlay");
-
-const $errorContainer = document.getElementById("error-container");
-
-const $errorList = document.getElementById("errors-list");
-
-const $form = d.getElementById("task-form");
-
-const $main = d.getElementById("task-list-section");
-
-let $draggingItem = null;
-
-const $confirmForm = d.getElementById("confirm-form");
-
-const $footer = d.getElementById("footer");
-
+// Filters
+const $filters = d.getElementById("filters");
 const $allFilterBtn = d.getElementById("all-filter");
 const $activeFilterBtn = d.getElementById("active-filter");
 const $completedFilterBtn = d.getElementById("completed-filter");
-const $filters = d.getElementById("filters");
+
+// State variables
+let $draggingItem = null;
 let currentFilter = null;
 
-const $moreOptionsBtn = d.getElementById("more-options-btn");
+// Modals...
+const $confirmModal = document.getElementById("confirm-modal");
+const $confirmForm = d.getElementById("confirm-form");
+const $modalText = document.getElementById("modal-text");
 
+// Toast
+const $toastContainer = d.getElementById("toast-container");
+
+// Import/Export
+const $fileInput = document.getElementById("file-input");
+const $errorToggle = d.getElementById("error-toggle");
+const $errorCount = d.getElementById("error-count");
+const $errorOverlay = d.getElementById("error-overlay");
+const $errorContainer = document.getElementById("error-container");
+const $errorList = document.getElementById("errors-list");
+
+// Footer
+const $footer = d.getElementById("footer");
+
+// More options Menu
+const $moreOptionsBtn = d.getElementById("more-options-btn");
 const $menuOfOptions = d.getElementById("menu-of-options");
 
-const $themeBtn = d.getElementById("theme-toggle");
+// Stats:
+const $statsDiv = d.getElementById("stats");
+const $statsTemplate = d.getElementById("stats-template");
 
+// === Functions ===
 const renderTasks = (tasksToRender = null, drag = false) => {
   const tasks = tasksToRender || taskManager.getAll();
 
@@ -91,37 +95,9 @@ const renderTasks = (tasksToRender = null, drag = false) => {
 
     $deleteBtn.dataset.id = task.id;
 
-    // const li = d.createElement("li");
-    // const input = d.createElement("input");
-    // const label = d.createElement("label");
-    // const deleteBtn = d.createElement("button");
-
-    // li.className = "task-item draggable";
-    // li.dataset.id = task.id;
-    // li.setAttribute("draggable", "true");
-
-    // input.type = "checkbox";
-    // input.className = "task-checkbox";
-    // input.id = task.id;
-    // input.dataset.id = task.id;
-    // input.checked = task.completed;
-    // if (input.checked) li.dataset.status = "completed";
-
-    // label.className = "label";
-    // label.htmlFor = task.id;
-    // label.textContent = task.description;
-
-    // deleteBtn.className = "delete-btn";
-    // deleteBtn.textContent = " \u2715";
-    // deleteBtn.dataset.id = task.id;
-
-    // li.appendChild(input);
-    // li.appendChild(label);
-    // li.appendChild(deleteBtn);
     fragment.appendChild($clone);
   });
 
-  // $taskList.innerHTML = "";
   $taskList.appendChild(fragment);
 
   updatePendingCounter();
@@ -173,7 +149,6 @@ const handleZeroTasks = () => {
   $taskList.appendChild(p);
 };
 
-//  - Shows stats in <div>
 const renderStats = () => {
   $statsDiv.innerHTML = "";
 
@@ -199,7 +174,6 @@ const renderStats = () => {
   $statsDiv.classList.toggle("hidden");
 };
 
-// - Listen to form submit
 const addTask = () => {
   const result = taskManager.addTask($newTaskInput.value);
 
@@ -216,7 +190,6 @@ const addTask = () => {
 
 const editTask = ($label, id) => {
   const originalText = $label.textContent;
-  console.log(originalText);
 
   const $input = document.createElement("input");
   $input.type = "text";
@@ -251,7 +224,6 @@ const editTask = ($label, id) => {
 
       $label.textContent = $input.value;
       showToast(result.message, "success");
-      // renderTasks();
     }
 
     if (e.key === "Escape") removeInput();
@@ -289,8 +261,6 @@ const completeTask = (id) => {
     return;
   }
 
-  // console.log("Marked as: " + result.markedAs);
-  // renderTasks();
   loadCurrentFilterTasks();
   showToast(result.message, "success");
 };
@@ -409,8 +379,8 @@ const showConfirmModal = (context, message, id = null) => {
     export: ["json-btn", "csv-btn", "txt-btn", "cancel-btn"],
   };
 
-  // Mapeamos tus contextos a los grupos de botones
-  let group = "delete"; // por defecto para los 'clear' y 'delete1'
+  //Maps contexts to the button groups
+  let group = "delete"; // by default for 'clear' and 'delete1'
   if (context === "import") group = "import";
   if (context === "export") group = "export";
 
@@ -473,7 +443,6 @@ const showErrorsIcon = (arr) => {
 
 const hideErrorsIcon = () => {
   $errorToggle.classList.add("hidden");
-  // $errorToggle.classList.add("is-blinking");
   $errorCount.textContent = `⚠️0`;
   $errorList.innerHTML = "";
 };
@@ -513,7 +482,7 @@ const handleFileSelect = (e) => {
 
         setTimeout(() => {
           showToast(
-            "Open the ︽ menu and click the <br>pulsing badge for the error log.",
+            "Open the menu with <br>︽ / ︾ and click the <br>pulsing badge for the error log.",
             "info",
           );
         }, 3000);
@@ -624,24 +593,13 @@ const highlightFilter = (filter) => {
 
   filter.classList.add("highlight");
 };
-// const loadCurrentFilterTasks = () => {
-//   currentFilter = getCurrentFilter();
-
-//   let tasks;
-
-//   if (currentFilter === "active") tasks = taskManager.getPending();
-//   else if (currentFilter === "completed")
-//     tasks = taskManager.getCompletedTasks();
-//   else tasks = taskManager.getAll();
-
-//   renderTasks(tasks);
-// };
 
 const hideMenu = () => {
   $moreOptionsBtn.classList.toggle("rotate");
   $menuOfOptions.classList.toggle("hidden");
 };
 
+// === Listeners ===
 const initialize = () => {
   // ***** Event delegation is used per section for easier maintenance and scalability
   // Theme management:
@@ -664,7 +622,6 @@ const initialize = () => {
   $statsDiv.addEventListener("click", (e) => {
     if (e.target.matches("#close-stats")) {
       $statsDiv.classList.toggle("hidden");
-      // console.log("jala cerrar");
     }
   });
 
@@ -767,7 +724,6 @@ const initialize = () => {
     }
 
     if (e.target.matches("#all-filter")) {
-      // renderTasks();
       saveCurrentFilter("all");
       loadCurrentFilterTasks();
     }
@@ -820,7 +776,6 @@ const initialize = () => {
     }
   });
 
-  // renderTasks();
   loadCurrentFilterTasks();
   updatePendingCounter();
 };

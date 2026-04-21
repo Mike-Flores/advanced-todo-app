@@ -20,32 +20,34 @@ This document outlines the testing suite performed to ensure the application's r
 
 ## 2. Mass Actions & Logic
 
-| ID        | Feature         | Scenario                             | Expected Result                                                                                                                           |
-| :-------- | :-------------- | :----------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| **TC-10** | Complete All    | Database Empty                       | Prevents action; shows: _"There are zero tasks in database"_.                                                                             |
-| **TC-11** | Complete All    | No pending tasks                     | Prevents action; shows: _"No pending tasks to complete"_.                                                                                 |
-| **TC-12** | Complete All    | Success                              | Marks all tasks as completed in one batch and shows _"All tasks marked as completed"_.                                                    |
-| **TC-13** | Clear All       | Database Empty                       | Prevents action; shows: _"No tasks available to clear"_.                                                                                  |
-| **TC-14** | Clear All       | Persistence Failure                  | Implements **Rollback**: if it fails to clear Storage, restores memory and ID counter and shows _"System error: Failed to clear storage"_ |
-| **TC-15** | Clear All       | Success                              | Clears storage and shows: _"All tasks cleared"_                                                                                           |
-| **TC-16** | Clear Completed | Database empty or No completed tasks | Prevents action; shows: _"No completed tasks to clear"_                                                                                   |
-| **TC-17** | Clear Completed | Success                              | Prompts for confirmation; filters and removes only completed tasks; shows: _"Successfully cleared [quantity] completed task(s)"_          |
+| ID        | Feature         | Scenario                             | Expected Result                                                                                                                                                                                                                        |
+| :-------- | :-------------- | :----------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **TC-10** | Complete All    | Database Empty                       | Prevents action; shows: _"There are zero tasks in database"_.                                                                                                                                                                          |
+| **TC-11** | Complete All    | No pending tasks                     | Prevents action; shows: _"No pending tasks to complete"_.                                                                                                                                                                              |
+| **TC-12** | Complete All    | Success                              | Marks all tasks as completed in one batch and shows _"All tasks marked as completed"_.                                                                                                                                                 |
+| **TC-13** | Clear All       | Database Empty                       | Prevents action; shows: _"No tasks available to clear"_.                                                                                                                                                                               |
+| **TC-14** | Clear All       | Persistence Failure                  | Implements **Rollback**: if it fails to clear Storage, restores memory and ID counter and shows _"System error: Failed to clear storage"_. **Note:** Tested via code review; edge cases (e.g., quota exceeded) not manually validated. |
+| **TC-15** | Clear All       | Success                              | Prompts for confirmation; clears storage and shows: _"All tasks cleared"_                                                                                                                                                              |
+| **TC-16** | Clear Completed | Database empty or No completed tasks | Prevents action; shows: _"No completed tasks to clear"_                                                                                                                                                                                |
+| **TC-17** | Clear Completed | Success                              | Prompts for confirmation; filters and removes only completed tasks; shows: _"Successfully cleared [quantity] completed task(s)"_                                                                                                       |
 
 ## 3. Advanced Import/Export Engine
 
-| ID        | Feature | Scenario                       | Expected Result                                                                                                                                                                                                       |
-| :-------- | :------ | :----------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **TC-18** | Import  | Smart Flow                     | If list is empty, bypasses "Merge/Replace" modal and opens file picker.                                                                                                                                               |
-| **TC-19** | Import  | Invalid File Format            | Rejects non-JSON files; shows: _"Only .json files are allowed"_.                                                                                                                                                      |
-| **TC-20** | Import  | Corrupt JSON                   | `try...catch` handles parsing errors; shows: _"Invalid JSON file"_.                                                                                                                                                   |
-| **TC-21** | Import  | Partial Import                 | Validates `id` (number), `description` (string), and `completed` (boolean). Imports the valid ones and registers the failed ones without stopping the process. Detailed report available via the 'More options' menu. |
-| **TC-22** | Import  | Error Badge                    | Displays a button as a blinking badge with the count of failed items, next to "Import" button, to open the detailed report of errors found on invalid tasks.                                                          |
-| **TC-23** | Import  | Duplicate filter               | In Merge mode, it identifies and separates existing tasks by description.                                                                                                                                             |
-| **TC-24** | Import  | No new tasks                   | In Merge mode, if there are no new tasks to import, prevents action; shows: _"No tasks imported, all of them already exist"_.                                                                                         |
-| **TC-25** | Import  | No valid tasks only duplicates | In Merge mode, If there are no valid tasks but there are duplicates, displays a toast notification with the count of invalid and duplicate tasks..                                                                    |
-| **TC-26** | Import  | Success                        | Depending on mode (merge or replace) shows on toast how many tasks were imported, how many were duplicates and how many had an invalid format.                                                                        |
-| **TC-27** | Export  | Empty List                     | Blocks export if no tasks exist; shows: _"No tasks available for export"_.                                                                                                                                            |
-| **TC-28** | Export  | Success                        | Shows: _"Tasks exported successfully"_.                                                                                                                                                                               |
+**Note:** See Testing Resources section on 'Readme.md', for a "guided" linear test execution or simply import each file at folder 'Files for testing import feature', on its numbered order.
+
+| ID        | Feature | Scenario                       | Expected Result                                                                                                                                                                                                                                     |
+| :-------- | :------ | :----------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **TC-18** | Import  | Smart Flow                     | If list is empty, bypasses "Merge/Replace" modal and opens file picker.                                                                                                                                                                             |
+| **TC-19** | Import  | Invalid File Format            | Rejects non-JSON files; shows: _"Only .json files are allowed"_.                                                                                                                                                                                    |
+| **TC-20** | Import  | Corrupt JSON                   | `try...catch` handles parsing errors; shows: _"Invalid JSON file format"_.                                                                                                                                                                          |
+| **TC-21** | Import  | Partial Import                 | Validates `id` (number), `description` (string), and `completed` (boolean). Imports the valid ones and registers the failed ones without stopping the process. Detailed report available via the 'More options' menu (︽ on desktop, ︾ on mobile). |
+| **TC-22** | Import  | Error Badge                    | Displays a button as a blinking badge with the count of failed items, next to "Import" button, to open the detailed report of errors found on invalid tasks.                                                                                        |
+| **TC-23** | Import  | Duplicate filter               | In Merge mode, it identifies and separates existing tasks by description.                                                                                                                                                                           |
+| **TC-24** | Import  | No new tasks                   | In Merge mode, if there are no new tasks to import, prevents action; shows: _"No tasks imported, all of them already exist"_.                                                                                                                       |
+| **TC-25** | Import  | No valid tasks only duplicates | In Merge mode, If there are no valid tasks but there are duplicates, displays a toast notification with the count of invalid and duplicate tasks..                                                                                                  |
+| **TC-26** | Import  | Success                        | Depending on mode (merge or replace) shows on toast how many tasks were imported, how many were duplicates and how many had an invalid format.                                                                                                      |
+| **TC-27** | Export  | Empty List                     | Blocks export if no tasks exist; shows: _"No tasks available for export"_.                                                                                                                                                                          |
+| **TC-28** | Export  | Success                        | Shows: _"Tasks exported successfully"_.                                                                                                                                                                                                             |
 
 ## 4. UX & State Integrity
 
@@ -59,8 +61,16 @@ This document outlines the testing suite performed to ensure the application's r
 | **TC-34** | Theme/Filters | Persistence                   | Theme and current filter are persisted in localStorage and restored upon session reload.                                                                        |
 | **TC-35** | Initial State | First-time user (No data)     | App loads with light theme on, 'All' filter by default, empty list message, and items left counter at 0.                                                        |
 
-## 5. Accessibility (a11y) - Known Issues
+## 5. Accessibility (a11y)
 
-- **Keyboard Navigation:** Linear navigation works with `Tab`.
-- **Focus Management:** Focus returns to the top of the page when opening the Statistics modal (Improvement pending).
+- **Semantic HTML structure**
+- **Keyboard Navigation:** Linear navigation works with `Tab`, `Enter` and `Space`.
 - **Visibility:** Visibility of Edit/Delete buttons has been optimized for mouse hover and keyboard focus on desktop.
+- **Focus indicators** on interactive elements
+
+## 6. Known Limitations
+
+- **Focus Management:** Focus returns to the top of the page when opening the Statistics modal (Improvement pending).
+- **Screen reader** announcements not fully tested
+- **localStorage dependency:** App requires localStorage to be enabled.
+  If disabled, tasks, theme and current filter cannot be saved.

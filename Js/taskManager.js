@@ -51,19 +51,15 @@ const checkForDuplicate = (text) => {
     };
   }
 
-  // console.log(text);
-
-  // Normalizamos el texto que viene del usuario
   const normalizedInput = text.trim().toLowerCase();
 
-  // Buscamos en la lista de tareas
   const foundTask = tasks.find((task) => {
     const normalizedTask = task.description.trim().toLowerCase();
     return normalizedTask === normalizedInput;
   });
 
-  // success → indica si la función pudo validar el input o si la función pudo ejecutarse completa.
-  // isDuplicate → indica si ya existe una tarea con esa descripción.
+  // success → Indicates whether the function was able to validate the input or whether the function was able to execute completely.
+  // isDuplicate → Indicates if a task with that description already exists.
   return { success: true, isDuplicate: !!foundTask, task: foundTask || null };
 };
 
@@ -116,14 +112,12 @@ const deleteTask = (id) => {
 };
 
 const getCompletedTasks = function () {
-  // Retorna solo tasks completed
-  // Usa filter
   const completed = tasks.filter((x) => x.completed === true);
   return completed;
 
-  // Versión más corta (opcional):
+  // Shorter version (optional):
   // return tasks.filter(x => x.completed);
-  // (porque x.completed ya es true/false)
+  // (Because x.completed already is true/false)
 };
 
 const clearCompleted = () => {
@@ -135,10 +129,6 @@ const clearCompleted = () => {
 
   tasks = tasks.filter((task) => !task.completed);
 
-  // completed.forEach((el) => {
-  //   taskManager.deleteTask(el.id);
-  // });
-
   saveToStorage();
 
   return {
@@ -148,33 +138,22 @@ const clearCompleted = () => {
 };
 
 const getPending = function () {
-  // Retorna solo tasks NO completed
-  // Usa filter
   const pending = tasks.filter((x) => x.completed === false);
   return pending;
 
-  // Versión corta:
+  // Shorter version:
   // return tasks.filter(x => !x.completed);
 };
 
-// Retorna número total de tasks
 const countTotal = () => tasks.length;
 
-// Retorna tasks cuya descripción INCLUYA el text (case-insensitive)
-// Pista: usa .toLowerCase() y .includes()
-// Ejemplo: search("js") → encuentra "Estudiar JS"
 const search = function (text) {
   const validationResult = validateNotEmpty(text, "Search input");
   if (!validationResult.success) return validationResult;
 
-  // Esto lo reemplacé con lo de abajo porque sólo checaba si sí se incluían esos caracteres, y por ejemplo "4ta tar" coincidía con "4ta tarea" aunque estuviera incompleta:
-  // ACTUALIZACIÓN: creo que SÍ es correcto usar includes() ya que en las barras de búsqueda yo no pongo el texto completo de lo que estoy buscando; lo había reemplazado con la comparación estricta (===) porque quería usar search() para buscar duplicados, pero mejor haré una función dedicada a eso.
   const result = tasks.filter((task) =>
     task.description.toLowerCase().includes(text.toLowerCase()),
   );
-  // const result = tasks.filter(
-  //   (task) => task.description.toLowerCase() === text.toLowerCase()
-  // );
 
   if (result.length === 0) return { success: false, message: "Task not found" };
 
@@ -182,11 +161,7 @@ const search = function (text) {
 };
 
 const sortById = function (ascending = true) {
-  // Retorna tasks ordenadas por id
-  // ascending = true → ascending order
-  // ascending = false → descending order
-
-  // El [...tasks] crea una copia nueva.
+  // [...tasks] Creates a new copy.
   return [...tasks].sort((a, b) => (ascending ? a.id - b.id : b.id - a.id));
 };
 
@@ -205,10 +180,7 @@ const getStats = function () {
 const updateDescription = function (id, newDescription) {
   if (!id) return { success: false, error: "Enter the task ID to edit" };
 
-  const validationResult = validateNotEmpty(
-    newDescription,
-    "The new description",
-  );
+  const validationResult = validateNotEmpty(newDescription, "new description");
   if (!validationResult.success) return validationResult;
 
   let result = findTask(id);
@@ -254,23 +226,6 @@ const exportData = () => {
   };
 };
 
-// const validateTaskFormat = (importedTasks) => {
-//   // Validate the structure of each task
-//   const taskFormat = importedTasks.every(
-//     (t) =>
-//       typeof t.id === "number" &&
-//       typeof t.description === "string" &&
-//       t.description.trim() !== "" &&
-//       typeof t.completed === "boolean"
-//   );
-
-//   if (!taskFormat) {
-//     return { success: false, error: "Invalid task format" };
-//   }
-
-//   return { success: true, message: "The format is correct" };
-// };
-
 const validateTaskFormat = (importedTasks) => {
   const errors = [];
   const validTasks = [];
@@ -278,14 +233,14 @@ const validateTaskFormat = (importedTasks) => {
   importedTasks.forEach((t, index) => {
     const taskErrors = [];
 
-    // id: debe existir y ser número
+    // id: must exist and be a numeric value
     if (!("id" in t)) {
       taskErrors.push("Missing 'id' property");
     } else if (typeof t.id !== "number") {
       taskErrors.push("'id' must be a numeric value");
     }
 
-    // description: debe existir y ser string no vacío
+    // description: must exist and be a non empty string
     if (!("description" in t)) {
       taskErrors.push("Missing 'description' property");
     } else if (
@@ -295,7 +250,7 @@ const validateTaskFormat = (importedTasks) => {
       taskErrors.push("'description' cannot be empty");
     }
 
-    // completed: debe existir y ser boolean
+    // completed: must exist and be a boolean value
     if (!("completed" in t)) {
       taskErrors.push("Missing 'completed' property");
     } else if (typeof t.completed !== "boolean") {
@@ -323,7 +278,7 @@ const validateTaskFormat = (importedTasks) => {
 };
 
 const overwriteTasks = (importedTasks) => {
-  // Validate that it's an array
+  // Validates that it's an array
   if (!Array.isArray(importedTasks)) {
     return { success: false, error: "An array was expected" };
   }
@@ -340,7 +295,6 @@ const overwriteTasks = (importedTasks) => {
   idCounter = 0;
 
   filteredTasks.forEach((item) => {
-    // console.log(item);
     item.id = generateId();
   });
 
@@ -350,7 +304,6 @@ const overwriteTasks = (importedTasks) => {
 
   saveToStorage();
 
-  // Retornar un resultado claro para la UI:
   return {
     success: true,
     importedCount: filteredTasks.length,
@@ -361,7 +314,7 @@ const overwriteTasks = (importedTasks) => {
 };
 
 const mergeTasks = (importedTasks) => {
-  // Validate that it's an array
+  // Validates that it's an array
   if (!Array.isArray(importedTasks)) {
     return { success: false, error: "An array was expected" };
   }
@@ -371,27 +324,19 @@ const mergeTasks = (importedTasks) => {
   }
 
   const noDuplicates = [],
-    existingTasks = [];
+    duplicates = [];
 
   for (const task of importedTasks) {
-    // console.log(task);
-
     const result = checkForDuplicate(task.description);
-
-    // if (!result.success) {
-    //   return result;
-    // }
 
     if (!result.isDuplicate) {
       noDuplicates.push(task);
     }
 
     if (result.isDuplicate) {
-      existingTasks.push(task);
+      duplicates.push(task);
     }
   }
-  // console.log("NEW: ", noDuplicates);
-  // console.log("OLD; ", existingTasks);
 
   if (noDuplicates.length === 0) {
     return {
@@ -402,24 +347,22 @@ const mergeTasks = (importedTasks) => {
 
   const formatValidation = validateTaskFormat(noDuplicates);
 
-  // Si no hay tareas válidas y si hay duplicadas
+  // If there are no valid tasks and if there are duplicates
   if (formatValidation.validTasks.length === 0) {
-    if (existingTasks.length > 0) {
+    if (duplicates.length > 0) {
       return {
         success: false,
+        errors: formatValidation.errors,
         error: `${formatValidation.error}, <br>and 
-          ${existingTasks.length} task(s) already existed`,
+        ${duplicates.length} task(s) already existed`,
       };
     }
     return formatValidation;
   }
 
-  // console.log("Hasta AQUÍ llega");
-
   const filteredTasks = formatValidation.validTasks;
 
   filteredTasks.forEach((item) => {
-    // console.log(item);
     item.id = generateId();
     tasks.push(item);
   });
@@ -428,18 +371,15 @@ const mergeTasks = (importedTasks) => {
 
   saveToStorage();
 
-  // Retornar un resultado claro para la UI:
   return {
     success: true,
     importedCount: filteredTasks.length,
-    duplicates: existingTasks?.length || 0,
+    duplicates: duplicates?.length || 0,
     invalidFormat: formatValidation.errors?.length || 0,
 
     errors: formatValidation.errors || [],
     message: "Task(s) merged successfully",
   };
-
-  // return filteredTasks;
 };
 
 const reorderTasks = (newIdsOrder) => {
@@ -474,10 +414,6 @@ const getStorageUsage = () => {
 const toggleCompleted = (id) => {
   const result = findTask(id);
   if (!result.success) return result;
-
-  // !result.task.completed
-  //   ? (result.task.completed = true)
-  //   : (result.task.completed = false);
 
   result.task.completed = !result.task.completed;
 
@@ -530,9 +466,3 @@ export const taskManager = {
   toggleCompleted,
   completeAll,
 };
-
-// Todas válidas y nuevas:
-const testValidNew = [
-  { id: 101, description: "Comprar pan", completed: false },
-  { id: 102, description: "Estudiar JavaScript", completed: true },
-];
