@@ -70,7 +70,7 @@ This document outlines the testing suite performed to ensure the application's r
 
 ## 6. Known Limitations
 
-- **Focus Management:** Focus returns to the top of the page when opening the Statistics modal (Improvement pending).
+- **Focus Management:** Focus returns to the top of the page when opening the Statistics modal.
 - **Screen reader** announcements not fully tested
 - **localStorage dependency:** App requires localStorage to be enabled.
   If disabled, tasks, theme and current filter cannot be saved.

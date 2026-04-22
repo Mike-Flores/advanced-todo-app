@@ -62,6 +62,7 @@ const renderTasks = (tasksToRender = null, drag = false) => {
 
   if (tasks.length === 0) {
     handleZeroTasks();
+    updatePendingCounter();
     return;
   }
 

@@ -1,7 +1,7 @@
 :root {
   --gradient: linear-gradient(to bottom right, var(--light-blue), var(--pink))
     border-box;
-  --bg-image: url("/images/bg-mobile-light.jpg");
+  --bg-image: url("../images/bg-mobile-light.jpg");
   --blue500: hsl(220, 98%, 61%);
   --light-blue: hsl(192, 100%, 67%);
   --pink: hsl(280, 87%, 65%);
@@ -32,7 +32,7 @@
   --btm-line: hsl(237, 14%, 26%);
   --circles-clr: hsl(237, 14%, 26%);
   --text-muted: hsl(233, 14%, 35%);
-  --bg-image: url("/images/bg-mobile-dark.jpg");
+  --bg-image: url("../images/bg-mobile-dark.jpg");
   --hover-on-btns: hsl(234, 39%, 85%);
 }
 
@@ -253,6 +253,12 @@ html {
   stroke: var(--svg-color);
 }
 
+.edit-btn:hover .edit-delete-svg,
+.delete-btn:hover .edit-delete-svg {
+  stroke: var(--hover-on-btns);
+  stroke-width: 2px;
+}
+
 .edit-input {
   width: 0;
   /* It forces the input not to impose its base width. */
@@ -269,7 +275,7 @@ html {
   color: var(--text-primary);
 }
 
-.no-pointer-events {
+.edit-delete-svg {
   pointer-events: none;
 }
 
@@ -567,11 +573,11 @@ html {
 
 @media (min-width: 530px) {
   :root {
-    --bg-image: url("/images/bg-desktop-light.jpg");
+    --bg-image: url("../images/bg-desktop-light.jpg");
   }
 
   [data-theme="dark"] {
-    --bg-image: url("/images/bg-desktop-dark.jpg");
+    --bg-image: url("../images/bg-desktop-dark.jpg");
   }
 
   * {

@@ -71,7 +71,6 @@ const addTask = (task) => {
 
   const duplicatesResult = checkForDuplicate(task);
 
-  console.log(duplicatesResult);
   if (duplicatesResult.isDuplicate)
     return { success: false, error: "This task already exists" };
 
